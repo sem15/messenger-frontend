@@ -25,17 +25,8 @@ export default {
 </script>
 
 <style>
-.palette {
-  background-color: #474448;
-  background-color: #2D232E;
-  background-color: #E0DDCF;
-  background-color: #534B52;
-  background-color: #F1F0EA;
-}
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
 }
 .app-main {
   position: absolute;
@@ -46,8 +37,9 @@ export default {
   background-color: #1E1E1F;
   margin: 0;
   padding: 0;
+  /* overflow: clip; */
   display: grid;
-  grid-template-columns: 4% 13% 71% 12%;
+  grid-template-columns: 4% 13% 70% 13%;
   grid-template-rows: 10% 45% 45%;
   grid-template-areas: 
     "navbar header header header"
