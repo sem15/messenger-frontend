@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import store from './vuex/vuex.js'
 
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -19,5 +20,6 @@ library.add(faHashtag)
 
 
 createApp(App)
+.use(store)
 .component('font-awesome-icon', FontAwesomeIcon)
 .mount('#app')
