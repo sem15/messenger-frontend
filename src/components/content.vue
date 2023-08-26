@@ -46,7 +46,7 @@
       align-items: center;
       margin-left: 5%;
       width: 90%;
-      height: 80%;
+      height: 70%;
       border-radius: 12px;
       background-color: #2d2d2f;
       border: none;
@@ -58,7 +58,7 @@
       margin-left: 5%;
       background-color: transparent;
       width: 90%;
-      height: 50%;
+      height: 80%;
       border: none;
       outline: none;
       color: rgb(239, 232, 232);
