@@ -1,6 +1,6 @@
 <template>
   <div class="app-main">
-    <Header class="header"/>
+    <HeaderBar class="header-bar"/>
     <Navbar class="navbar" />
     <Channels class="channels" />
     <Content class="content" />
@@ -9,7 +9,7 @@
 
 <script>
 import Navbar from './components/navbar.vue'
-import Header from './components/header.vue'
+import HeaderBar from './components/headerBar.vue'
 import Channels from './components/channels.vue'
 import Content from './components/content.vue'
 
@@ -17,7 +17,7 @@ export default {
   name: 'App',
   components: {
     Navbar,
-    Header,
+    HeaderBar,
     Channels,
     Content
   }
@@ -59,7 +59,7 @@ export default {
   grid-area: navbar;
 }
 
-.header {
+.header-bar {
   grid-area: header;
 }
 
