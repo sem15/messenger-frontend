@@ -1,7 +1,9 @@
 <template>
     <div class="content-container">
         <div class="content-pane">
-
+          <div v-for="message in currentMessagesList" :key="message">
+            <Message :inputMessage="message" />
+          </div>
         </div>
 
         <div class="text-box-container">
@@ -11,14 +13,21 @@
   </template>
   
   <script>
+  import Message from './message.vue'
+
   export default {
     name: 'header',
-    currentChannel: "General",
+    components: {
+      Message
+    },
     computed: {
       currentTextChannel() {
         return `Message #${this.$store.getters.getCurrentTextChannel}`
+      },
+      currentMessagesList() {
+        return this.$store.getters.getCurrentMessagesList
       }
-    }
+    },
   }
   </script>
   
@@ -38,6 +47,12 @@
 
     .content-pane {
       /* border: 1px solid red; */
+      /* overflow: scroll; */
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: scroll;
+
     }
 
     .text-box-container {
