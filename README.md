@@ -1,4 +1,4 @@
-# messenger-app
+# messenger-project
 
 ## Project setup
 ```
