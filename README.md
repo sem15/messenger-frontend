@@ -1,4 +1,4 @@
-# messenger-project
+# messenger-frontend
 
 ## Project setup
 ```
