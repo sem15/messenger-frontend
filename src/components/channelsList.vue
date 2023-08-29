@@ -15,7 +15,7 @@
   
   <script>
   export default {
-    name: 'header',
+    name: 'channelsList',
     data() {
       return { 
         channelsList: [

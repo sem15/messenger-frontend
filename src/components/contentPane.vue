@@ -13,10 +13,10 @@
   </template>
   
   <script>
-  import Message from './message.vue'
+  import Message from './messageTemplate.vue'
 
   export default {
-    name: 'header',
+    name: 'contentPane',
     components: {
       Message
     },

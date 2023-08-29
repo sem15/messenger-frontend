@@ -25,7 +25,7 @@ const store = createStore({
         return state.currentTextChannel
     },
     getCurrentMessagesList(state) {
-      console.log("vuex was called and saw:", state.currentMessagesList) 
+      // console.log("vuex was called and saw:", state.currentMessagesList)
       return state.currentMessagesList
     }
   }

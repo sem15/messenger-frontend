@@ -12,7 +12,7 @@
   
   <script>
   export default {
-    name: 'message',
+    name: 'messageTemplate',
     props: ['inputMessage'],
     computed: {
       currentTextChannel() {
@@ -20,7 +20,7 @@
       }
     },
     mounted() {
-        console.log("message got:", this.inputMessage)
+        //console.log("message got:", this.inputMessage)
     }
   }
   </script>

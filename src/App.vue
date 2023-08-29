@@ -2,16 +2,18 @@
   <div class="app-main">
     <HeaderBar class="header-bar"/>
     <Navbar class="navbar" />
-    <Channels class="channels" />
-    <Content class="content" />
+    <Channels class="channels-area" />
+    <Content class="content-area" />
   </div>
 </template>
 
 <script>
-import Navbar from './components/navbar.vue'
+import Navbar from './components/navbarLeft.vue'
 import HeaderBar from './components/headerBar.vue'
-import Channels from './components/channels.vue'
-import Content from './components/content.vue'
+import Channels from './components/channelsList.vue'
+import Content from './components/contentPane.vue'
+import SocketioService from './services/socketio.service.js';
+
 
 export default {
   name: 'App',
@@ -20,6 +22,20 @@ export default {
     HeaderBar,
     Channels,
     Content
+  },
+  data() {
+    return {
+
+    }
+  },
+  created() {
+    SocketioService.setupSocketConnection();
+  },
+  beforeUnmount() {
+    SocketioService.disconnect();
+  },
+  mounted() {
+    SocketioService.message("mounted ran");
   }
 }
 </script>
@@ -55,11 +71,11 @@ export default {
   grid-area: header;
 }
 
-.channels {
+.channels-area {
   grid-area: channels;
 }
 
-.content {
+.content-area {
   grid-area: content;
 }
 
