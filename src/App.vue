@@ -36,7 +36,19 @@ export default {
   },
   mounted() {
     SocketioService.message("mounted ran");
-  }
+
+    //get permissions for user mic
+    // const openMediaDevices = async (constraints) => {
+    //   return await navigator.mediaDevices.getUserMedia(constraints);
+    // }
+    //   try {
+    //     const stream = openMediaDevices({'video':false,'audio':true});
+    //     console.log('Got MediaStream:', stream);
+    //   } catch(error) {
+    //     console.error('Error accessing media devices.', error);
+    //   }
+
+  },
 }
 </script>
 
