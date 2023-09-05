@@ -25,29 +25,39 @@ export default {
   },
   data() {
     return {
-
+      sessionID: undefined
     }
   },
   created() {
     SocketioService.setupSocketConnection();
+    SocketioService.socket.on('return-sessionid', (data) => {
+      this.sessionID = data
+      this.$store.commit('setSessionID', data)
+    });
   },
   beforeUnmount() {
     SocketioService.disconnect();
   },
-  mounted() {
-    SocketioService.message("mounted ran");
+  async mounted() {
+    // SocketioService.message("mounted ran");
+    SocketioService.requestSessionID()
 
     //get permissions for user mic
-    // const openMediaDevices = async (constraints) => {
-    //   return await navigator.mediaDevices.getUserMedia(constraints);
-    // }
-    //   try {
-    //     const stream = openMediaDevices({'video':false,'audio':true});
-    //     console.log('Got MediaStream:', stream);
-    //   } catch(error) {
-    //     console.error('Error accessing media devices.', error);
-    //   }
+    // this.getMicPermissions()
 
+  },
+  methods: {
+    getMicPermissions() {
+      const openMediaDevices = async (constraints) => {
+        return await navigator.mediaDevices.getUserMedia(constraints);
+      }
+      try {
+        const stream = openMediaDevices({'video':false,'audio':true});
+        console.log('Got MediaStream:', stream);
+      } catch(error) {
+        console.error('Error accessing media devices.', error);
+      }
+    },
   },
 }
 </script>

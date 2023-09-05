@@ -6,6 +6,14 @@ class SocketioService {
 
     setupSocketConnection() {
         this.socket = io("http://localhost:3000");
+
+        // this.socket.on('return-sessionid', (data) => {
+        //     console.log("got session id:", data);
+        // });
+    }
+
+    requestSessionID() {
+        this.socket.emit('request-sessionid')
     }
 
     message(message) {
