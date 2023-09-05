@@ -2,6 +2,7 @@ import { createStore } from 'vuex'
 
 const store = createStore({
   state: {
+    sessionID: null,
     currentTextChannel: 'General',
     currentMessagesList: [
       {
@@ -18,6 +19,10 @@ const store = createStore({
   mutations: {
     changeTextChannel(state, payload) {
         state.currentTextChannel = payload
+    },
+    setSessionID(state, payload) {
+      state.sessionID = payload
+      console.log("sessionID:", state.sessionID);
     },
   },
   getters: {
