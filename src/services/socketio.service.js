@@ -5,7 +5,7 @@ class SocketioService {
     constructor() { }
 
     setupSocketConnection() {
-        this.socket = io("http://localhost:3000");
+        this.socket = io("http://3.90.174.173:3000");
 
         // this.socket.on('return-sessionid', (data) => {
         //     console.log("got session id:", data);
