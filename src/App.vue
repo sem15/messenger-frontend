@@ -2,7 +2,7 @@
   <div class="app-main">
     <HeaderBar class="header-bar"/>
     <Navbar class="navbar" />
-    <Channels class="channels-area" />
+    <Channels class="channels-area" @joinVC="joinVC" />
     <Content class="content-area" />
   </div>
 </template>
@@ -39,11 +39,27 @@ export default {
     SocketioService.disconnect();
   },
   async mounted() {
-    // SocketioService.message("mounted ran");
     SocketioService.requestSessionID()
 
     //get permissions for user mic
     // this.getMicPermissions()
+
+    // Listen for the "offer" event
+    SocketioService.socket.on("offer", async (message) => {
+      // Get the offer from the message
+      const offer = message.offer;
+
+      // Accept the offer
+      this.peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+
+      // Create an answer
+      const answer = await this.peerConnection.createAnswer();
+
+      // Send the answer to the other client
+      SocketioService.socket.emit("answer", {
+        answer: answer,
+      });
+    });
 
   },
   methods: {
@@ -57,6 +73,43 @@ export default {
       } catch(error) {
         console.error('Error accessing media devices.', error);
       }
+    },
+    joinVC(channelName) {
+      console.log("Joining:", channelName)
+      this.makeCall()
+    },
+    async makeCall() {
+      const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]};
+      const peerConnection = new RTCPeerConnection(configuration);
+
+      SocketioService.socket.on("message", async (message) => {
+        if (message.answer) {
+          // Create a new RTCSessionDescription from the message
+          const remoteDesc = new RTCSessionDescription(message.answer);
+
+          // Set the remote description on the peer connection
+          await peerConnection.setRemoteDescription(remoteDesc);
+        }
+      });
+      // Create an offer and send it to the signal channel
+      const offer = await peerConnection.createOffer();
+      await peerConnection.setLocalDescription(offer);
+      SocketioService.socket.emit("offer", {
+        offer: offer,
+      });
+    },
+    // Handle the offer if you are not the sender
+    async handleOffer(offer) {
+      // Accept the offer
+      this.peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+
+      // Create an answer
+      const answer = await this.peerConnection.createAnswer();
+
+      // Send the answer to the other client
+      this.socket.emit("answer", {
+        answer: answer,
+      });
     },
   },
 }
