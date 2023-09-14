@@ -6,7 +6,7 @@
             {{ title.name }}
           </div>
           <div v-else class="channel-name">
-            <font-awesome-icon icon="fa-solid fa-volume-high"/>
+            <font-awesome-icon @click="this.$emit('joinVC', title.name);" icon="fa-solid fa-volume-high"/>
             {{ title.name }}
           </div>
         </div>
@@ -38,7 +38,7 @@
     methods: {
       changeTextChannel(channelName) {
         this.$store.commit('changeTextChannel', channelName)
-      }
+      },
     }
   }
   </script>
