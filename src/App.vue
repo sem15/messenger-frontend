@@ -25,7 +25,8 @@ export default {
   },
   data() {
     return {
-      sessionID: undefined
+      sessionID: undefined,
+      configuration: {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]},
     }
   },
   created() {
@@ -45,20 +46,30 @@ export default {
     // this.getMicPermissions()
 
     // Listen for the "offer" event
-    SocketioService.socket.on("offer", async (message) => {
+    SocketioService.socket.on("offer", async (offer) => {
+      console.log("Detected Offer:", offer)
+
+      let peerConnection = new RTCPeerConnection(this.configuration);
+
+      console.log(peerConnection)
+
       // Get the offer from the message
-      const offer = message.offer;
+      // const offer = message.offer;
 
       // Accept the offer
-      this.peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+      peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
 
       // Create an answer
-      const answer = await this.peerConnection.createAnswer();
+      let answer = await peerConnection.createAnswer();
 
       // Send the answer to the other client
-      SocketioService.socket.emit("answer", {
+      SocketioService.socket.emit("offer-response", {
         answer: answer,
       });
+    });
+
+    SocketioService.socket.on("offer-response", async (response) => {
+      console.log("Detected Offer Reponse:", response)
     });
 
   },
@@ -79,8 +90,8 @@ export default {
       this.makeCall()
     },
     async makeCall() {
-      const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]};
-      const peerConnection = new RTCPeerConnection(configuration);
+      // const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]};
+      const peerConnection = new RTCPeerConnection(this.configuration);
 
       SocketioService.socket.on("message", async (message) => {
         if (message.answer) {
