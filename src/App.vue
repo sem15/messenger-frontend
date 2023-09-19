@@ -27,6 +27,7 @@ export default {
     return {
       sessionID: undefined,
       configuration: {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]},
+      // peerConnection: undefined,
     }
   },
   created() {
@@ -49,18 +50,16 @@ export default {
     SocketioService.socket.on("offer", async (offer) => {
       console.log("Detected Offer:", offer)
 
-      let peerConnection = new RTCPeerConnection(this.configuration);
-
-      console.log(peerConnection)
-
-      // Get the offer from the message
-      // const offer = message.offer;
+      const peerConnection = new RTCPeerConnection(this.configuration);
+      // console.log(peerConnection)
 
       // Accept the offer
       peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
+      console.log("after", peerConnection.currentRemoteDescription)
 
       // Create an answer
       let answer = await peerConnection.createAnswer();
+      await peerConnection.setLocalDescription(answer);
 
       // Send the answer to the other client
       SocketioService.socket.emit("offer-response", {
@@ -68,9 +67,10 @@ export default {
       });
     });
 
-    SocketioService.socket.on("offer-response", async (response) => {
-      console.log("Detected Offer Reponse:", response)
-    });
+    // SocketioService.socket.on("offer-response", async (response) => {
+    //   console.log("Detected Offer Reponse:", response)
+    //   console.log(peerConnection.iceGatheringState)
+    // });
 
   },
   methods: {
@@ -90,37 +90,25 @@ export default {
       this.makeCall()
     },
     async makeCall() {
-      // const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]};
+
       const peerConnection = new RTCPeerConnection(this.configuration);
 
-      SocketioService.socket.on("message", async (message) => {
-        if (message.answer) {
-          // Create a new RTCSessionDescription from the message
-          const remoteDesc = new RTCSessionDescription(message.answer);
-
-          // Set the remote description on the peer connection
-          await peerConnection.setRemoteDescription(remoteDesc);
-        }
-      });
       // Create an offer and send it to the signal channel
-      const offer = await peerConnection.createOffer();
+      let offer = await peerConnection.createOffer();
       await peerConnection.setLocalDescription(offer);
+      console.log("before", peerConnection.currentRemoteDescription)
       SocketioService.socket.emit("offer", {
         offer: offer,
       });
-    },
-    // Handle the offer if you are not the sender
-    async handleOffer(offer) {
-      // Accept the offer
-      this.peerConnection.setRemoteDescription(new RTCSessionDescription(offer));
 
-      // Create an answer
-      const answer = await this.peerConnection.createAnswer();
-
-      // Send the answer to the other client
-      this.socket.emit("answer", {
-        answer: answer,
+      SocketioService.socket.on("offer-response", async (response) => {
+        console.log("Detected Offer Reponse:", response)
+        // Set the remote description
+        peerConnection.setRemoteDescription(new RTCSessionDescription(response));
+        console.log("after", peerConnection.currentRemoteDescription)
+        console.log(peerConnection)
       });
+
     },
   },
 }
